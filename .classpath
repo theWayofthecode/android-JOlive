@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="gen"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+	<classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+	<classpathentry kind="lib" path="libs/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="libs/dom4j-1.6.jar"/>
+	<classpathentry kind="lib" path="libs/jaxen-1.1-beta-5.jar"/>
+	<classpathentry kind="lib" path="libs/JSAP-2.0b.jar"/>
+	<classpathentry kind="lib" path="libs/jstyx-0.2.0.jar"/>
+	<classpathentry kind="lib" path="libs/mina-0.8.0.jar"/>
+	<classpathentry kind="lib" path="libs/quartz-1.5.1.jar"/>
+	<classpathentry kind="lib" path="libs/TableLayout.jar"/>
+	<classpathentry kind="lib" path="libs/android-logging-log4j-1.0.3.jar"/>
+	<classpathentry kind="lib" path="libs/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="libs/slf4j-android-1.5.8.jar"/>
+	<classpathentry kind="output" path="bin/classes"/>
+</classpath>
