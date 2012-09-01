@@ -25,8 +25,7 @@ public class JOPanel extends OPanel {
 		initComponent(parComp.getContext());
 		parComp.addView(this.viewComp);
 	}
-	
-	
+
 	public void createUITree(CStyxFile cf, View parComp) throws StyxException {
 		if (!cf.isDirectory())
 			return;
@@ -58,14 +57,12 @@ public class JOPanel extends OPanel {
 		} else if ("row".equals(type) || attr.row) {
 			viewComp = new TableRow(uiCtx);
 		} else if ("label".equals(type) 
-				|| "tbl".equals(type)) {
-			TextView comp = new TextView(uiCtx);
-			comp.setText(getData());
-			viewComp = comp;
-		} else if ("text".equals(type) 
+				|| "tbl".equals(type)
+				|| "text".equals(type) 
 				|| "tag".equals(type)) {
 			EditText comp = new EditText(uiCtx);
 			comp.setText(getData());
+			comp.setOnLongClickListener(new TextLongClickListener(this));
 			viewComp = comp;
 		} else if ("button".equals(type)) {
 			Button b = new Button(uiCtx);

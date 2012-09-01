@@ -16,7 +16,7 @@ public class JOliveActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ConfigureLog4j.configure();
-        ViewGroup rootComp = init("192.168.2.2", 4987);
+        ViewGroup rootComp = init("192.168.2.4", 4987);
         setContentView(rootComp);
 
     }
