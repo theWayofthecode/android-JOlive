@@ -1,6 +1,7 @@
 package com.jolive.ui;
 
 
+
 import java.util.StringTokenizer;
 
 import com.jolive.omero.OMerop;
@@ -12,12 +13,14 @@ import com.jolive.omero.OPanel;
 import com.jolive.ui.JOPanel;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import uk.ac.rdg.resc.jstyx.StyxException;
 import uk.ac.rdg.resc.jstyx.client.CStyxFile;
@@ -85,6 +88,13 @@ public class JOPanel extends OPanel {
 			b.setText(getName().split(":")[1]);
 			viewComp = b;
 		}
+
+		
+/*		if (attr.tag == true) {
+			JLabel tag = new JLabel(new ImageIcon(getClass().getResource("/resources/tag.png")));
+			tag.addMouseListener(createPopupMenu());
+			swingComp.add(tag);
+		}*/
 	}
 	
 	public View getComponent() {
@@ -109,13 +119,63 @@ public class JOPanel extends OPanel {
 		String s = parser.nextToken();
 		if ("close".equals(s)) {
 			removeUITree(panelFd);
+		} else if ("focus".equals(s)) {
+			viewComp.requestFocus();
 		}
+		
 	}
 
 	private void omeroListenerUpdate(OMeropUpdate e) throws StyxException {
-		// TODO Auto-generated method stub
+		System.err.println("Update:");
+		System.err.println(e.toString());
+
+/*		if (e.ctls == null) {
+			if ("draw".equals(getType())) {
+				omeroListenerUpdateDraw();
+			}
+		} else {*/
+			StringTokenizer parser = new StringTokenizer(e.ctls);
+			String s = parser.nextToken();
+			if ("order".equals(s)) {
+				omeroListenerUpdateOrder(parser);
+			} else if ("font".equals(s)) {
+				omeroListenerUpdateFont(parser.nextToken());
+			} else if ("hide".equals(s)) {
+				viewComp.setVisibility(View.INVISIBLE);
+			} else if ("show".equals(s)) {
+				viewComp.setVisibility(View.VISIBLE);
+			}
+//		}
 		
 	}
 	
+	private void omeroListenerUpdateOrder(StringTokenizer order) throws StyxException {
+		while (order.hasMoreTokens()) {
+			String s = order.nextToken();
+			CStyxFile f = panelFd.getFile(s);
+			if (!OOlive.panelRegistry.containsKey(f.getPath())) {
+				createUITree(f, viewComp);
+				viewComp.invalidate();
+			}
+		}
+	}
 	
+	private void omeroListenerUpdateFont(String type) {
+		if ("B".equals(type)) {
+			modifyFont(Typeface.BOLD);
+		} else if ("I".equals(type)) {
+			modifyFont(Typeface.ITALIC);
+		}
+	}
+	
+	private void modifyFont(int style) {
+		TextView t;
+		try {
+			t = (TextView)this.viewComp;
+		} catch (ClassCastException e) {
+			System.err.println(e.getMessage());
+			return;
+		}
+		t.setTypeface(null, style);
+	}
 }
