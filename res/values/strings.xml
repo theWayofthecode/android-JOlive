@@ -2,5 +2,5 @@
 
     <string name="app_name">JOlive</string>
     <string name="title_activity_main">JOlive</string>
-
+    <string name="menu_settings">Pull Apps</string>
 </resources>
