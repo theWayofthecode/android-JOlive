@@ -14,20 +14,21 @@ import uk.ac.rdg.resc.jstyx.client.StyxConnection;
 
 public class OOlive extends Thread {
 
-	Handler ooHandler;
 	public static HashMap<String, JOPanel> panelRegistry;
 
-	CStyxFile oliveFD = null;
-	
-	public OOlive(CStyxFile oliveFD, Handler ooHandler) {
+	private CStyxFile oliveFD = null;
+	private Handler ooHandler;
+	private String screen;
+	public OOlive(CStyxFile oliveFD, Handler ooHandler, String screen) {
 		this.oliveFD = oliveFD;
-		panelRegistry = new HashMap<String, JOPanel>();
 		this.ooHandler = ooHandler;
+		this.screen = screen;
+		panelRegistry = new HashMap<String, JOPanel>();
 	}
 	
 	public void run() {
 		System.err.println("OOlive started");
-		OMeropCtl top = new OMeropCtl("/main", "top");
+		OMeropCtl top = new OMeropCtl(screen, "top");
 		byte[] td = new byte[top.packedsize()];
 		top.pack().get(td);
 		try {

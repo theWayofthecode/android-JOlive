@@ -26,14 +26,15 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 
 public class JOliveActivity extends Activity {
-	Handler ooHandler;
-	CStyxFile root;
-	View rscreen;
+	public Handler ooHandler;
+	public OOlive ooLive = null;
+	public CStyxFile root;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ConfigureLog4j.configure();
-		StyxConnection conn = new StyxConnection("192.168.1.5", 4987);
+		StyxConnection conn = new StyxConnection("192.168.2.4", 4987);
 		try {
 			conn.connect();
 		} catch (StyxException e) {
@@ -41,10 +42,8 @@ public class JOliveActivity extends Activity {
 			e.printStackTrace();
 		}
 		root = conn.getRootDirectory();
-		ooHandler = new Handler();
-		(new OOlive(root.getFile("olive"), ooHandler)).start();
-		rscreen = initScreen(root.getFile("main"));
-        setContentView(rscreen);
+		ooHandler = new Handler();		
+        setContentView(initScreen(root.getFile("main")));
     }
     
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -89,6 +88,11 @@ public class JOliveActivity extends Activity {
         HorizontalScrollView hRootComp = new HorizontalScrollView(this);
         hRootComp.addView(vRootComp);
 
+		if (ooLive != null) {
+			OOlive.panelRegistry.clear();
+			ooLive.interrupt();
+		}
+		ooLive = new OOlive(root.getFile("olive"), ooHandler, screen.getPath());
 		try { 
 			JOPanel jp = new JOPanel(screen, rootComp);
 			jp.createUITree(screen, rootComp);
@@ -96,6 +100,8 @@ public class JOliveActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		ooLive.start();
 		return hRootComp;
     }
 }

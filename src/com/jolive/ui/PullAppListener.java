@@ -46,9 +46,7 @@ public class PullAppListener implements OnMultiChoiceClickListener,
 				}
 			}
 		}
-		
 		activity.setContentView(activity.initScreen(myScreen));
-
 	}
 
 	@Override

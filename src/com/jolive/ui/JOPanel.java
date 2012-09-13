@@ -22,6 +22,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.jolive.ui.JDrawPanel;
 import uk.ac.rdg.resc.jstyx.StyxException;
 import uk.ac.rdg.resc.jstyx.client.CStyxFile;
 
@@ -87,14 +88,10 @@ public class JOPanel extends OPanel {
 			Button b = new Button(uiCtx);
 			b.setText(getName().split(":")[1]);
 			viewComp = b;
+		} else if ("draw".equals(type)) {
+			JDrawPanel jdp = new JDrawPanel(getData(), uiCtx);
+			viewComp = jdp;
 		}
-
-		
-/*		if (attr.tag == true) {
-			JLabel tag = new JLabel(new ImageIcon(getClass().getResource("/resources/tag.png")));
-			tag.addMouseListener(createPopupMenu());
-			swingComp.add(tag);
-		}*/
 	}
 	
 	public View getComponent() {
@@ -129,11 +126,11 @@ public class JOPanel extends OPanel {
 		System.err.println("Update:");
 		System.err.println(e.toString());
 
-/*		if (e.ctls == null) {
+		if (e.ctls == null) {
 			if ("draw".equals(getType())) {
 				omeroListenerUpdateDraw();
 			}
-		} else {*/
+		} else {
 			StringTokenizer parser = new StringTokenizer(e.ctls);
 			String s = parser.nextToken();
 			if ("order".equals(s)) {
@@ -145,7 +142,7 @@ public class JOPanel extends OPanel {
 			} else if ("show".equals(s)) {
 				viewComp.setVisibility(View.VISIBLE);
 			}
-//		}
+		}
 		
 	}
 	
@@ -177,5 +174,11 @@ public class JOPanel extends OPanel {
 			return;
 		}
 		t.setTypeface(null, style);
+	}
+	
+	private void omeroListenerUpdateDraw() {
+		JDrawPanel jdp = (JDrawPanel)viewComp;
+		jdp.instructions = getData().split("\n");
+		jdp.invalidate();
 	}
 }
