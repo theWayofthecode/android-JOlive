@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 public class ActionSwipeListener implements View.OnTouchListener {
 static final String TAG = "SwipeListener";
@@ -83,9 +84,13 @@ private void rightHorizAction() {
 private void rightDownAction() {
 	Log.i(TAG, jop.getName() + ": rightDown");
 }
+
 private void leftUpAction() {
 	Log.i(TAG, jop.getName() + ": leftUp");
+	TextView t = (TextView)jop.getComponent();
+	jop.setData(t.getText().toString());
 }
+
 private void leftHorizAction() {
 	Log.i(TAG, jop.getName() + ": leftHoriz");
 	jop.ctl("exec Close");

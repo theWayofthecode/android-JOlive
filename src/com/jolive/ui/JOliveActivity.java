@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ListView;
@@ -34,16 +35,31 @@ public class JOliveActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ConfigureLog4j.configure();
-		StyxConnection conn = new StyxConnection("192.168.2.4", 4987);
-		try {
-			conn.connect();
-		} catch (StyxException e) {
-			System.err.println("Could not reach PC");
-			e.printStackTrace();
-		}
-		root = conn.getRootDirectory();
-		ooHandler = new Handler();		
-        setContentView(initScreen(root.getFile("main")));
+        
+    	AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+    	alert.setTitle("JOlive");
+    	alert.setMessage("Type the PC ip address");
+
+    	// Set an EditText view to get user input 
+    	final EditText input = new EditText(this);
+    	alert.setView(input);
+
+    	alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+    	public void onClick(DialogInterface dialog, int whichButton) {
+    		String PCaddr = input.getText().toString();
+    		System.err.println("Trying to connect to " + PCaddr);
+    		connectToPC(PCaddr);
+    	}
+    	});
+
+    	alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+    	  public void onClick(DialogInterface dialog, int whichButton) {
+    	    // Canceled.
+    	  }
+    	});
+
+    	alert.show();
     }
     
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -103,5 +119,20 @@ public class JOliveActivity extends Activity {
 
 		ooLive.start();
 		return hRootComp;
+    }
+ 
+
+    private void connectToPC(String PCaddress) {        
+        StyxConnection conn = new StyxConnection(PCaddress, 4987);
+		try {
+			conn.connect();
+		} catch (StyxException e) {
+			System.err.println("Could not reach PC");
+			e.printStackTrace();
+		}
+
+		root = conn.getRootDirectory();
+		ooHandler = new Handler();		
+        setContentView(initScreen(root.getFile("main")));
     }
 }
